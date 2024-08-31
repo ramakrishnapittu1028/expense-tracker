@@ -40,7 +40,7 @@ return (
         <Modal.Body>
             <Form>
                 <Form.Group controlId="formExpenseName">
-                    <Form.Label>Expense Name</Form.Label>
+                    <Form.Label>Expense Name*</Form.Label>
                     <Form.Control as="select"value={expenseName} onChange={(e) => setExpenseName(e.target.value)}>
                         {categories.map((category) => (
                             <option key={category} value={category}>
@@ -51,7 +51,7 @@ return (
                 </Form.Group>
 
                 <Form.Group controlId="formAmount">
-                    <Form.Label>Amount</Form.Label>
+                    <Form.Label>Amount*</Form.Label>
                     <Form.Control
                         type="number"
                         placeholder="Enter amount"
@@ -61,7 +61,7 @@ return (
                 </Form.Group>
 
                 <Form.Group controlId="formDate">
-                    <Form.Label>Date</Form.Label>
+                    <Form.Label>Date*</Form.Label>
                     <Form.Control
                         type="date"
                         value={date}
@@ -84,7 +84,7 @@ return (
             <Button variant="secondary" onClick={handleClose}>
                 Cancel
             </Button>
-            <Button variant="primary" onClick={handleSave}>
+            <Button variant="primary" onClick={handleSave} disabled={!expenseName || !amount || !date}>
                 Add Expense
             </Button>
         </Modal.Footer>

@@ -1,0 +1,44 @@
+nav {
+  display: flex;
+  flex-direction: column;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+a.active {
+  font-weight: bold;
+  color: #007bff;
+}
+
+a span {
+  margin-left: 10px;
+}
+
+.collapsed a span {
+  display: none;
+}
+
+.collapsed a {
+  justify-content: center;
+}
+
+.collapsed li {
+  margin: 20px 0; /* Increase space between icons */
+}

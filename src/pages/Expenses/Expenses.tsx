@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-tabulator/lib/styles.css'; // Import Tabulator styles
-import 'react-tabulator/css/tabulator_materialize.min.css'; // Import Tabulator Bootstrap styles
 import { ReactTabulator } from 'react-tabulator';
 import AddExpense from '../../components/AddExpensePopup/AddExpensePopup';
-import './Expenses.css';
 import { IExpense } from '../../models/IExpense';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-tabulator/lib/styles.css'; // Import Tabulator styles
+import 'react-tabulator/css/tabulator_modern.min.css'; // Import Tabulator Bootstrap styles
+
+import './Expenses.css';
 
 const Expenses: React.FC = () => {
   const [show, setShow] = useState(false);
@@ -36,6 +38,7 @@ const Expenses: React.FC = () => {
 
   return (
     <div className="expenses">
+    <h1>Expenses</h1>
       <Button variant="primary" onClick={handleShow}>
         Add Expense
       </Button>

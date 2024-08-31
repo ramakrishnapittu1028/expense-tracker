@@ -1,9 +1,55 @@
-
-.app-header {
-  font-size: 20px;
-  font-weight: bold;
-  padding: 10px;
+.App {
+  display: flex;
+  height: 100vh;
 }
-.body-container {
-  padding: 10px;
+
+.sidebar {
+  width: 250px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.sidebar .toggle-icon {
+  cursor: pointer;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  transition: margin-left 0.3s;
+}
+
+.collapsed .sidebar {
+  width: 60px;
+}
+
+.collapsed .main-content {
+  margin-left: 60px;
+}
+
+.collapsed .sidebar nav ul li span {
+  display: none;
+}
+
+.collapsed .sidebar nav ul li {
+  margin: 20px 0; /* Increase space between icons */
+}
+
+.sidebar nav ul li {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar nav ul li svg {
+  margin-right: 10px;
 }
