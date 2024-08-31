@@ -6,28 +6,30 @@ import 'react-tabulator/css/tabulator_materialize.min.css'; // Import Tabulator 
 import { ReactTabulator } from 'react-tabulator';
 import AddExpense from '../../components/AddExpensePopup/AddExpensePopup';
 import './Expenses.css';
+import { IExpense } from '../../models/IExpense';
 
 const Expenses: React.FC = () => {
   const [show, setShow] = useState(false);
   const [expenses, setExpenses] = useState([
-    { id: 1, name: 'Groceries', amount: 100, date: '2023-01-01' },
-    { id: 2, name: 'Gas', amount: 50, date: '2023-01-02' },
-    { id: 3, name: 'Rent', amount: 1000, date: '2023-01-03' }
+    { id: 1, name: 'Groceries', amount: 100, date: '2023-01-01', notes: 'Bought fruits and vegetables' },
+    { id: 2, name: 'Gas', amount: 50, date: '2023-01-02', notes: 'Filled up the tank' },
+    { id: 3, name: 'Rent', amount: 1000, date: '2023-01-03', notes: 'Paid monthly rent' },
   ]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleAddExpense = (expense: { name: string; amount: number; date: string }) => {
-    const newExpense = { id: expenses.length + 1, ...expense };
+  const handleAddExpense = (expense: IExpense) => {
+    const newExpense = { id: expenses.length + 1, ...expense, notes: expense.notes || '' };
     setExpenses([...expenses, newExpense]);
   };
 
   const columns = [
     { title: 'ID', field: 'id', width: "10%" },
     { title: 'Name', field: 'name', width: "35%" },
-    { title: 'Amount', field: 'amount', width: "30%" },
-    { title: 'Date', field: 'date', width: "25%" }
+    { title: 'Amount', field: 'amount', width: "15%" },
+    { title: 'Date', field: 'date', width: "15%" },
+    { title: 'Notes', field: 'notes', width: "25%" }
   ];
 
   return (

@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './AddExpensePopup.css';
+import { IExpense } from '../../models/IExpense';
 
 interface AddExpenseModalProps {
     show: boolean;
     handleClose: () => void;
-    handleAddExpense: (expense: { name: string; amount: number; date: string }) => void;
+    handleAddExpense: (expense: IExpense) => void;
   }
 
 const AddExpense: React.FC<AddExpenseModalProps> = ({ show, handleClose, handleAddExpense }) => {
     const [expenseName, setExpenseName] = useState('');
     const [amount, setAmount] = useState('');
     const [date, setDate] = useState('');
+    const [notes, setNotes] = useState('');
+
+    useEffect(() => {
+        if (show) {
+          setExpenseName('');
+          setAmount('');
+          setDate('');
+          setNotes('');
+        }
+      }, [show]);
   
     const handleSave = () => {
       // Handle save logic here
@@ -53,6 +64,16 @@ const AddExpense: React.FC<AddExpenseModalProps> = ({ show, handleClose, handleA
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formNotes">
+            <Form.Label>Notes</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter notes"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
             />
           </Form.Group>
         </Form>
