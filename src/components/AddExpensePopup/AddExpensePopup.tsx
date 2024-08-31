@@ -5,32 +5,46 @@ import './AddExpensePopup.css';
 import { IExpense } from '../../models/IExpense';
 
 interface AddExpenseModalProps {
+    selectedExpense: IExpense | null;
     categories: string[];
     show: boolean;
     handleClose: () => void;
     handleAddExpense: (expense: IExpense) => void;
   }
 
-const AddExpense: React.FC<AddExpenseModalProps> = ({ categories, show, handleClose, handleAddExpense }) => {
-    const [expenseName, setExpenseName] = useState('');
-    const [amount, setAmount] = useState('');
-    const [date, setDate] = useState('');
-    const [notes, setNotes] = useState('');
+const AddExpense: React.FC<AddExpenseModalProps> = ({ selectedExpense, categories, show, handleClose, handleAddExpense }) => {
+    const [expense, setExpense] = useState<IExpense>({
+        id: 0,
+        name: '',
+        amount: 0,
+        date: '',
+        notes: ''
+      });
 
     useEffect(() => {
-        if (show) {
-          setExpenseName(categories[0]);
-          setAmount('');
-          setDate('');
-          setNotes('');
+        if (selectedExpense) {
+            setExpense(selectedExpense);
+          } else {
+            setExpense({
+              id: 0,
+              name: '',
+              amount: 0,
+              date: '',
+              notes: ''
+            });
         }
-      }, [categories, show]);
+    }, [selectedExpense]);
   
-    const handleSave = () => {
-      // Handle save logic here
-      handleAddExpense({ name: expenseName, amount: parseFloat(amount), date, notes });
-      handleClose();
-    };
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        console.log(name, value);
+        setExpense({ ...expense, [name]: value });
+      };
+    
+      const handleSubmit = () => {
+        handleAddExpense(expense);
+        handleClose();
+      };
   
 return (
     <Modal show={show} onHide={handleClose}>
@@ -41,7 +55,7 @@ return (
             <Form>
                 <Form.Group controlId="formExpenseName">
                     <Form.Label>Expense Name*</Form.Label>
-                    <Form.Control as="select"value={expenseName} onChange={(e) => setExpenseName(e.target.value)}>
+                    <Form.Control as="select" name='name' value={expense.name} onChange={handleChange}>
                         {categories.map((category) => (
                             <option key={category} value={category}>
                                 {category}
@@ -54,9 +68,10 @@ return (
                     <Form.Label>Amount*</Form.Label>
                     <Form.Control
                         type="number"
+                        name='amount'
                         placeholder="Enter amount"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
+                        value={expense.amount}
+                        onChange={handleChange}
                     />
                 </Form.Group>
 
@@ -64,18 +79,19 @@ return (
                     <Form.Label>Date*</Form.Label>
                     <Form.Control
                         type="date"
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
+                        name='date'
+                        value={expense.date}
+                        onChange={handleChange}
                     />
                 </Form.Group>
 
                 <Form.Group controlId="formNotes">
                     <Form.Label>Notes</Form.Label>
                     <Form.Control
-                        type="text"
+                        as="textarea"
                         placeholder="Enter notes"
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
+                        value={expense.notes}
+                        onChange={handleChange}
                     />
                 </Form.Group>
             </Form>
@@ -84,8 +100,8 @@ return (
             <Button variant="secondary" onClick={handleClose}>
                 Cancel
             </Button>
-            <Button variant="primary" onClick={handleSave} disabled={!expenseName || !amount || !date}>
-                Add Expense
+            <Button variant="primary" onClick={handleSubmit} disabled={!expense.name || !expense.amount || !expense.date}>
+            {selectedExpense ? 'Save Changes' : 'Add Expense'}
             </Button>
         </Modal.Footer>
     </Modal>

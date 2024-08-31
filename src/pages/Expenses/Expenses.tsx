@@ -12,6 +12,7 @@ import './Expenses.css';
 
 const Expenses: React.FC = () => {
   const [show, setShow] = useState(false);
+  const [selectedExpense, setSelectedExpense] = useState<IExpense | null>(null);
   const [expenses, setExpenses] = useState([
     { id: 1, name: 'Groceries', amount: 100, date: '2023-01-01', notes: 'Bought fruits and vegetables' },
     { id: 2, name: 'Gas', amount: 50, date: '2023-01-02', notes: 'Filled up the tank' },
@@ -19,21 +20,43 @@ const Expenses: React.FC = () => {
   ]);
   const categories = ["Groceries", "Health", "Payments", "Shopping", "Misc", "Gifts", "Entertainment", "Travel", "Education", "Insurance", "Investments", "Loans", "Rent", "Taxes", "Utilities", "Other Expense"];
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => { setShow(false); setSelectedExpense(null); };
   const handleShow = () => setShow(true);
 
   const handleAddExpense = (expense: IExpense) => {
-    console.log(expense);
-    const newExpense = { id: expenses.length + 1, ...expense, notes: expense.notes || '' };
-    setExpenses([...expenses, newExpense]);
+    const existingInd = expenses.findIndex(exp => exp.id === expense.id);
+    if (existingInd !== -1 && expense.id) {
+      expenses[existingInd] = { id: expense.id, ...expense, notes: expense.notes || '' };
+      setExpenses([...expenses]);
+    } else {
+      const newExpense = { id: expenses.length + 1, ...expense, notes: expense.notes || '' };
+      setExpenses([...expenses, newExpense]);
+    }
+  };
+
+  const handleEditExpense = (expense: IExpense) => {
+    setSelectedExpense(expense);
+    setShow(true);
   };
 
   const columns = [
     { title: 'ID', field: 'id', width: "10%" },
-    { title: 'Name', field: 'name', width: "35%" },
+    { title: 'Name', field: 'name', width: "25%" },
     { title: 'Amount', field: 'amount', width: "15%" },
     { title: 'Date', field: 'date', width: "15%" },
-    { title: 'Notes', field: 'notes', width: "25%" }
+    { title: 'Notes', field: 'notes', width: "25%" },
+    {
+      title: 'Actions',
+      field: 'actions',
+      width: "10%",
+      formatter: (cell: any) => {
+        return `<button class="btn btn-primary btn-sm">Edit</button>`;
+      },
+      cellClick: (e: any, cell: any) => {
+        const expense = cell.getRow().getData();
+        handleEditExpense(expense);
+      }
+    }
   ];
 
   return (
@@ -42,7 +65,7 @@ const Expenses: React.FC = () => {
       <Button variant="primary" onClick={handleShow}>
         Add Expense
       </Button>
-      <AddExpense categories={categories} show={show} handleClose={handleClose} handleAddExpense={handleAddExpense}/>
+      <AddExpense selectedExpense={selectedExpense} categories={categories} show={show} handleClose={handleClose} handleAddExpense={handleAddExpense}/>
       <div className="grid-container">
         <ReactTabulator
             data={expenses}
