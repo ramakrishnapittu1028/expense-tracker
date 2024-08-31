@@ -1,11 +1,14 @@
 import React from 'react';
 import './App.css';
+import Expenses from './pages/Expenses/Expenses';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-      </header>
+    <div className="app">
+      <header className="app-header">Expense Tracker</header>
+      <div className="body-container">
+        <Expenses />
+      </div>
     </div>
   );
 }
