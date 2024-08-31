@@ -15,11 +15,13 @@ const Expenses: React.FC = () => {
     { id: 2, name: 'Gas', amount: 50, date: '2023-01-02', notes: 'Filled up the tank' },
     { id: 3, name: 'Rent', amount: 1000, date: '2023-01-03', notes: 'Paid monthly rent' },
   ]);
+  const categories = ["Groceries", "Health", "Payments", "Shopping", "Misc", "Gifts", "Entertainment", "Travel", "Education", "Insurance", "Investments", "Loans", "Rent", "Taxes", "Utilities", "Other Expense"];
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleAddExpense = (expense: IExpense) => {
+    console.log(expense);
     const newExpense = { id: expenses.length + 1, ...expense, notes: expense.notes || '' };
     setExpenses([...expenses, newExpense]);
   };
@@ -37,7 +39,7 @@ const Expenses: React.FC = () => {
       <Button variant="primary" onClick={handleShow}>
         Add Expense
       </Button>
-      <AddExpense show={show} handleClose={handleClose} handleAddExpense={handleAddExpense}/>
+      <AddExpense categories={categories} show={show} handleClose={handleClose} handleAddExpense={handleAddExpense}/>
       <div className="grid-container">
         <ReactTabulator
             data={expenses}
