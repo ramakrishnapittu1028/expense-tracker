@@ -13,41 +13,42 @@ interface AddExpenseModalProps {
   }
 
 const AddExpense: React.FC<AddExpenseModalProps> = ({ selectedExpense, categories, show, handleClose, handleAddExpense }) => {
-    const [expense, setExpense] = useState<IExpense>({
-        id: 0,
-        name: '',
-        amount: 0,
-        date: '',
-        notes: ''
-      });
+    const emptyExpense: any = () => {
+        return {
+          id: 0,
+          name: '',
+          amount: 0,
+          date: '',
+          notes: '',
+          categories: [],
+        };
+    };
+    const [expense, setExpense] = useState<IExpense>(emptyExpense);
 
     useEffect(() => {
         if (selectedExpense) {
             setExpense(selectedExpense);
           } else {
-            setExpense({
-              id: 0,
-              name: '',
-              amount: 0,
-              date: '',
-              notes: ''
-            });
+            setExpense(emptyExpense);
         }
     }, [selectedExpense]);
   
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        console.log(name, value);
         setExpense({ ...expense, [name]: value });
       };
     
-      const handleSubmit = () => {
+    const handleSubmit = () => {
         handleAddExpense(expense);
+        handleModalClose();
+    };
+    const handleModalClose = () => {
+        setExpense(emptyExpense);
         handleClose();
       };
   
 return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleModalClose}>
         <Modal.Header closeButton>
             <Modal.Title>Add Expense</Modal.Title>
         </Modal.Header>
@@ -89,6 +90,7 @@ return (
                     <Form.Label>Notes</Form.Label>
                     <Form.Control
                         as="textarea"
+                        name='notes'
                         placeholder="Enter notes"
                         value={expense.notes}
                         onChange={handleChange}
@@ -97,7 +99,7 @@ return (
             </Form>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="secondary" onClick={handleModalClose}>
                 Cancel
             </Button>
             <Button variant="primary" onClick={handleSubmit} disabled={!expense.name || !expense.amount || !expense.date}>

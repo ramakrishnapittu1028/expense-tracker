@@ -26,11 +26,12 @@ const Expenses: React.FC = () => {
   const handleAddExpense = (expense: IExpense) => {
     const existingInd = expenses.findIndex(exp => exp.id === expense.id);
     if (existingInd !== -1 && expense.id) {
-      expenses[existingInd] = { id: expense.id, ...expense, notes: expense.notes || '' };
+      expenses[existingInd] = { ...expense, id: expense.id,  notes: expense.notes || '' };
       setExpenses([...expenses]);
     } else {
-      const newExpense = { id: expenses.length + 1, ...expense, notes: expense.notes || '' };
+      const newExpense = { ...expense, id: expenses.length + 1, notes: expense.notes || '' };
       setExpenses([...expenses, newExpense]);
+      setSelectedExpense(null);
     }
   };
 
